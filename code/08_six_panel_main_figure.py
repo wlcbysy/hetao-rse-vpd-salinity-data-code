@@ -181,11 +181,17 @@ def draw_grouped_vpd(ax, X_sample, vpd_shap, q33, q66, thresholds):
     ax.set_ylabel("SHAP value of VPD", fontsize=11, fontweight="bold")
     ax.text(-0.14, 1.13, "(b)", transform=ax.transAxes, fontsize=15, fontweight="bold")
     ax.legend(
-        frameon=False,
+        frameon=True,
+        facecolor="white",
+        edgecolor="none",
+        framealpha=0.82,
         fontsize=8,
-        loc="center left",
-        bbox_to_anchor=(1.02, 0.5),
-        borderaxespad=0,
+        loc="upper right",
+        bbox_to_anchor=(0.98, 0.98),
+        borderaxespad=0.2,
+        handlelength=1.4,
+        handletextpad=0.5,
+        labelspacing=0.25,
     )
     ax.tick_params(labelsize=9)
     sns.despine(ax=ax, top=True, right=True)
