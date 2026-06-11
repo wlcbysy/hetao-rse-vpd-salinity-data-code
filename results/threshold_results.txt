@@ -1,0 +1,7 @@
+# Unified thresholds for figure generation
+NDSI_Q33: -0.316382
+NDSI_Q66: -0.268388
+Low Salinity Threshold: 1.747825
+Medium Salinity Threshold: 1.757473
+High Salinity Threshold: 1.762781
+SHAP_Sample_Size: 3000

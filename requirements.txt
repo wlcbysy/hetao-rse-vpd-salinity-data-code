@@ -1,0 +1,13 @@
+cartopy
+earthengine-api
+geemap
+matplotlib
+numpy
+pandas
+pillow
+rasterio
+scikit-learn
+scipy
+seaborn
+shap
+statsmodels

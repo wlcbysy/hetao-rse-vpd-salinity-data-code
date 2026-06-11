@@ -1,0 +1,5 @@
+Test R2: 0.949338
+Test RMSE: 0.002338
+Training N: 34615
+Test N: 8654
+Unified exceedance area percent: 61.203
