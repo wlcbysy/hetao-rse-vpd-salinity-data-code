@@ -25,7 +25,7 @@ Generated on 2026-06-11 for the revised 5-main-figure package after supplementin
 | Figure 1 | `Final_Fig1_StudyArea_Concept.png` | Uses 2023 true GPP and NDSI maps; adds scale bar, 2023 summer label, pixel-density labels, and NDSI quantile lines. |
 | Figure 2 | `Final_Fig2_Drivers.png` | Uses only rows with true GPP for SHAP; shows global SHAP distribution plus VPD-NDSI exposure space. |
 | Figure 3 | `Final_Fig3_6Panel_Mechanisms.png` | Uses only rows with true GPP; adds model validation, salinity-specific VPD response curves, SM/LST/Tmax/NDSI response panels, and local threshold markers. |
-| Figure 4 | `Final_Fig4_Safe_Operating_Space.png` | Uses true-GPP SHAP sample for observed density, masked compound SHAP response, and zero-response thresholds. |
+| Figure 4 | `Final_Fig4_Safe_Operating_Space.png` | Uses true-GPP SHAP sample for observed density, annotated compound SHAP safe-space response, bootstrap boundary uncertainty envelopes, and salinity-specific bootstrap threshold distributions. |
 | Figure 5 | `Final_Fig5_Spatiotemporal_Risk.png` | Uses 2000-2023 VPD/NDSI covariates for long-term exposure projection and 2023 continuous VPD-margin map. |
 
 ## Sensitivity Check
