@@ -1,10 +1,10 @@
 # Push Instructions
 
-This folder is already initialized as a local git repository and contains one
-commit:
+This folder is already initialized as a local git repository on the `main`
+branch. You can verify the current final commit with:
 
 ```bash
-67f9efa Add Hetao RSE data and code package
+git log --oneline -1
 ```
 
 To upload it to GitHub, create an empty public repository on GitHub, then run
