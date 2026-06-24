@@ -1,0 +1,4 @@
+metric_a,metric_b,pearson_r
+nirv_mean_z,exceedance_area_percent,0.24190176196490257
+nirv_mean_z,mean_vpd_margin_kpa,0.3461390936914502
+exceedance_area_percent,mean_vpd_margin_kpa,0.7513082143196987

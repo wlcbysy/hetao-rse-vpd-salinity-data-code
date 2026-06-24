@@ -15,7 +15,8 @@ cropland productivity in the Hetao Irrigation District, China**
   model interpretation scripts and figure-generation scripts.
 - `figures/final/`: final manuscript figures.
 - `results/`: model-performance, threshold and sensitivity-summary outputs used
-  as numeric sources for the manuscript.
+  as numeric sources for the manuscript, including the ancillary NIRv
+  triangulation check.
 
 ## Evidence Boundary
 
@@ -41,8 +42,9 @@ available:
 3. `code/08_six_panel_main_figure.py`
 4. `code/09_safe_operating_space.py`
 5. `code/10_spatiotemporal_risk_mapping.py`
-6. `code/12_plot_fig1_study_area.py`
-7. `code/11_compile_final_figures.py`
+6. `code/13_nirv_margin_triangulation.py`
+7. `code/12_plot_fig1_study_area.py`
+8. `code/11_compile_final_figures.py`
 
 Earlier scripts (`01` to `03`) document the Google Earth Engine export route.
 
@@ -55,12 +57,19 @@ Earlier scripts (`01` to `03`) document the Google Earth Engine export route.
 - NDSI-background VPD zero-response thresholds: `1.946`, `1.960` and
   `1.964 kPa`
 - Mean annual threshold exceedance, 2000 to 2023: `8.3%` of cropland pixels
+- NIRv mean z-score correlations with unified exposure metrics: `r = 0.242`
+  for exceedance area and `r = 0.346` for mean VPD margin. This check supports
+  interpreting VPD-margin maps as exposure screening rather than direct
+  canopy-decline or yield-loss estimates.
 
 The exact values are recorded in:
 
 - `results/model_performance.txt`
 - `results/threshold_results.txt`
 - `results/threshold_sensitivity.csv`
+- `results/nirv_margin_triangulation.csv`
+- `results/nirv_margin_triangulation_correlations.csv`
+- `results/nirv_margin_triangulation_summary.md`
 
 ## Data Sources
 
