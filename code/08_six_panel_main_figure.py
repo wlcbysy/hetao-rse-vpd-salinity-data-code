@@ -310,7 +310,10 @@ def main():
         f.write(f"Spatial Block Fold Count: {block_folds}\n")
         f.write(f"Training N: {len(X_train)}\n")
         f.write(f"Test N: {len(X_test)}\n")
-        f.write(f"Unified exceedance area percent: {risk_df['Risk_Flag'].mean() * 100:.3f}\n")
+        f.write(
+            "Observed-GPP subset unified exceedance area percent: "
+            f"{risk_df['Risk_Flag'].mean() * 100:.3f}\n"
+        )
 
     plt.rcParams["font.family"] = "sans-serif"
     plt.rcParams["font.sans-serif"] = ["Arial", "Helvetica"]
