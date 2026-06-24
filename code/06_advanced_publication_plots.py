@@ -20,8 +20,10 @@ from figure_common import (
 def main():
     print("========== Generating Figure 2: global drivers and exposure space ==========")
     df, paths = load_master_data(__file__)
-    fig_dir = paths["figures"]
+    fig_dir = paths["diagnostic_figures"]
+    main_fig_dir = paths["main_figures"]
     os.makedirs(fig_dir, exist_ok=True)
+    os.makedirs(main_fig_dir, exist_ok=True)
 
     X = df[FEATURES]
     y = df["GPP"]
@@ -119,7 +121,7 @@ def main():
     sns.despine(ax=ax_biv, top=True, right=True)
 
     out_fig = os.path.join(fig_dir, "05_Paper_Summary_Beeswarm.png")
-    final_fig = os.path.join(fig_dir, "Final_Fig2_Drivers.png")
+    final_fig = os.path.join(main_fig_dir, "Final_Fig2_Drivers.png")
     fig.savefig(out_fig, dpi=500, bbox_inches="tight")
     fig.savefig(final_fig, dpi=500, bbox_inches="tight")
     plt.close(fig)

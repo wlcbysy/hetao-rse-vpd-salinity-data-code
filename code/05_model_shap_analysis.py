@@ -8,6 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 import shap
 
+from project_layout import DIAGNOSTIC_FIGURES_DIR, MASTER_DATA, ensure_output_dirs
+
 # 设置支持中文的字体
 plt.rcParams['font.sans-serif'] = ['Arial Unicode MS', 'SimHei'] 
 plt.rcParams['axes.unicode_minus'] = False
@@ -16,9 +18,9 @@ def main():
     print("========== Phase 4: Random Forest & SHAP 机制解耦 ==========")
     
     # 1. 路径设置
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    data_file = os.path.join(base_dir, 'data', 'Hetao_Master_Dataset_2000_2023.csv')
-    fig_dir = os.path.join(base_dir, 'figures')
+    ensure_output_dirs()
+    data_file = str(MASTER_DATA)
+    fig_dir = str(DIAGNOSTIC_FIGURES_DIR)
     
     # 2. 数据读取与准备
     print("正在加载主数据集...")

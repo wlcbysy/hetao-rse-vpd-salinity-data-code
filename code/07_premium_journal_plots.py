@@ -8,6 +8,8 @@ import shap
 import statsmodels.api as sm
 import matplotlib.gridspec as gridspec
 
+from project_layout import DIAGNOSTIC_FIGURES_DIR, MASTER_DATA, ensure_output_dirs
+
 # ==============================================================================
 # Phase 4.2: 顶刊级别主图绘制 (Premium Journal Aesthetic)
 # ==============================================================================
@@ -16,9 +18,9 @@ def main():
     print("========== 正在生成 RSE/Nature 级高质量主图 ==========")
     
     # 1. 路径设置
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    data_file = os.path.join(base_dir, 'data', 'Hetao_Master_Dataset_2000_2023.csv')
-    fig_dir = os.path.join(base_dir, 'figures')
+    ensure_output_dirs()
+    data_file = str(MASTER_DATA)
+    fig_dir = str(DIAGNOSTIC_FIGURES_DIR)
     
     # 2. 读取全量真实数据
     df = pd.read_csv(data_file).replace([np.inf, -np.inf], np.nan).dropna()
@@ -28,7 +30,7 @@ def main():
     y = df[target]
     
     # 3. 模型重训与 SHAP (使用全量)
-    print("拟合模型与计算 SHAP (全量 43,269 数据)...")
+    print(f"拟合模型与计算 SHAP (QC-passed GPP 样本 {len(df):,} 数据)...")
     rf_model = RandomForestRegressor(n_estimators=100, max_depth=15, n_jobs=-1, random_state=42)
     rf_model.fit(X, y)
     

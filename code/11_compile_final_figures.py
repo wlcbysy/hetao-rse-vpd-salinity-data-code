@@ -3,6 +3,7 @@ import os
 from PIL import Image
 
 from figure_common import read_threshold_file
+from project_layout import MAIN_FIGURES_DIR, THRESHOLD_RESULTS
 
 
 FINAL_FIGURES = [
@@ -26,9 +27,8 @@ def inspect_image(fig_dir, label, filename):
 
 
 def main():
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    fig_dir = os.path.join(base_dir, "figures")
-    threshold_path = os.path.join(fig_dir, "threshold_results.txt")
+    fig_dir = str(MAIN_FIGURES_DIR)
+    threshold_path = str(THRESHOLD_RESULTS)
 
     print("========== Final figure QA: 5-main-figure package ==========")
     for label, filename in FINAL_FIGURES:
@@ -48,9 +48,9 @@ def main():
 
     print("Unified thresholds:")
     print(f" - NDSI q33 / q66: {thresholds['NDSI_Q33']:.3f}, {thresholds['NDSI_Q66']:.3f}")
-    print(f" - Low salinity VPD threshold: {thresholds['Low Salinity Threshold']:.3f} kPa")
-    print(f" - Medium salinity VPD threshold: {thresholds['Medium Salinity Threshold']:.3f} kPa")
-    print(f" - High salinity VPD threshold: {thresholds['High Salinity Threshold']:.3f} kPa")
+    print(f" - Low-NDSI VPD threshold: {thresholds['Low Salinity Threshold']:.3f} kPa")
+    print(f" - Medium-NDSI VPD threshold: {thresholds['Medium Salinity Threshold']:.3f} kPa")
+    print(f" - High-NDSI VPD threshold: {thresholds['High Salinity Threshold']:.3f} kPa")
     print("========== Final figure QA passed ==========")
 
 

@@ -2,6 +2,8 @@ import ee
 import geemap
 import os
 
+from project_layout import DERIVED_RASTER_DIR, TIMESERIES_RASTER_DIR, ensure_output_dirs
+
 # ==============================================================================
 # Phase 2 (拓展): 河套平原“VPD-盐分复合胁迫” 
 # 任务：提取长时序生态气象指标 (2000-2023) 及 高纯度农作物掩膜
@@ -19,12 +21,10 @@ def main():
         return
 
     # 2. 定义本地保存路径
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    # 将长时序数据放在 data/timeseries/ 下以保持整洁
-    data_dir = os.path.join(os.path.dirname(current_dir), 'data', 'timeseries')
+    # 将长时序数据放在标准遥感数据区下以保持整洁
+    ensure_output_dirs()
+    data_dir = str(TIMESERIES_RASTER_DIR)
     os.makedirs(data_dir, exist_ok=True)
-    
-    base_data_dir = os.path.dirname(data_dir)
 
     # 3. 划定研究区边界
     # 采用覆盖河套农业区的 Bounding Box
@@ -36,7 +36,7 @@ def main():
     # 核心任务 1：提取静态农作物掩膜 (基于 ESA WorldCover)
     # =========================================================
     print("\n========== 正在提取静态农作物掩膜 ==========")
-    crop_mask_out = os.path.join(base_data_dir, 'Hetao_CropMask_WorldCover.tif')
+    crop_mask_out = str(DERIVED_RASTER_DIR / 'Hetao_CropMask_WorldCover.tif')
     if not os.path.exists(crop_mask_out):
         print("下载 ESA WorldCover 农田掩膜 (代码 40 = Cropland)...")
         worldcover = ee.ImageCollection("ESA/WorldCover/v200").first()

@@ -11,7 +11,8 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 from matplotlib.patches import Rectangle
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
-from figure_common import salinity_quantiles
+from figure_common import read_threshold_file, salinity_quantiles
+from project_layout import MAIN_FIGURES_DIR, MASTER_DATA, THRESHOLD_RESULTS, ensure_output_dirs
 
 # ==============================================================================
 # Phase 7: 构建 Fig 1 (Study Area & Geographical Location)
@@ -66,14 +67,21 @@ def add_scale_bar(ax, lon, lat, length_km=300):
 def main():
     print("========== 开始生成 Fig 1: 顶刊级研究区与水土环境地图 ==========")
     
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    data_file = os.path.join(base_dir, 'data', 'Hetao_Master_Dataset_2000_2023.csv')
-    fig_dir = os.path.join(base_dir, 'figures')
+    ensure_output_dirs()
+    data_file = str(MASTER_DATA)
+    fig_dir = str(MAIN_FIGURES_DIR)
     
     # 1. 读取数据
-    df = pd.read_csv(data_file).replace([np.inf, -np.inf], np.nan).dropna()
-    df_2023 = df[df['Year'] == 2023]
-    ndsi_33, ndsi_66 = salinity_quantiles(df)
+    df = pd.read_csv(data_file).replace([np.inf, -np.inf], np.nan)
+    df_2023 = df[
+        (df["Year"] == 2023)
+        & df[["Lon", "Lat", "GPP", "NDSI"]].notna().all(axis=1)
+    ].copy()
+    observed = df.dropna(subset=["GPP", "NDSI"])
+    threshold_meta = read_threshold_file(str(THRESHOLD_RESULTS))
+    ndsi_33, ndsi_66 = salinity_quantiles(observed)
+    ndsi_33 = threshold_meta.get("NDSI_Q33", ndsi_33)
+    ndsi_66 = threshold_meta.get("NDSI_Q66", ndsi_66)
     
     lon_min, lon_max = df_2023['Lon'].min(), df_2023['Lon'].max()
     lat_min, lat_max = df_2023['Lat'].min(), df_2023['Lat'].max()
@@ -171,7 +179,7 @@ def main():
     
     # 把色带挂在 density plot 右边，防止卡在 map 和 density 中间
     cbar_b = plt.colorbar(sc_b, ax=ax_b_den, fraction=0.2, pad=0.1)
-    cbar_b.set_label("GPP (gC/m²/day)", fontsize=16, fontweight='bold')
+    cbar_b.set_label("GPP (g C m$^{-2}$ day$^{-1}$)", fontsize=16, fontweight='bold')
     cbar_b.ax.tick_params(labelsize=14)
     ax_b_map.tick_params(labelsize=14)
     

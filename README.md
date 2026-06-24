@@ -3,8 +3,8 @@
 This repository contains the processed data, analysis scripts and final figure
 outputs for the manuscript:
 
-**A remote-sensing safe operating space for vapor pressure deficit-salinity
-compound stress in the Hetao Irrigation District, China**
+**Monitoring vapor pressure deficit-salinity exposure margins for irrigated
+cropland productivity in the Hetao Irrigation District, China**
 
 ## Contents
 
@@ -20,11 +20,15 @@ compound stress in the Hetao Irrigation District, China**
 ## Evidence Boundary
 
 The processed table `data/Hetao_Master_Dataset_2000_2023.csv` contains 355,944
-pixel-year observations from 2000 to 2023. True MOD17A2H GPP values are present
-only for 2021 to 2023, yielding 43,269 observed-GPP samples. The random forest
-and SHAP response analysis therefore use only the observed-GPP subset. The full
-2000 to 2023 covariate record is used only for VPD/salinity exposure projection
-after the response boundary is derived.
+pixel-year observations from 2000 to 2023. Annual GPP layers were screened before
+response modeling. The 2022 local MOD17A2H GPP band is all zero and is excluded
+from response modeling as an invalid product layer. QC-passed observed GPP is
+therefore limited to 2021 and 2023, yielding 28,846 observed-GPP pixel-years.
+GPP values were converted from scaled 8-day kg C m-2 composites to daily
+g C m-2 day-1 using a factor of 125.0. The random forest and SHAP response
+analysis use only the QC-passed observed-GPP subset. The full 2000 to 2023
+covariate record is used only for VPD/NDSI exposure projection after the
+response boundary is derived.
 
 ## Reproducibility Notes
 
@@ -44,11 +48,13 @@ Earlier scripts (`01` to `03`) document the Google Earth Engine export route.
 
 ## Key Outputs
 
-- Random forest test R2: `0.949`
-- Random forest test RMSE: `0.00234 g C m-2 day-1`
-- Salinity-stratified VPD zero-response thresholds: `1.748`, `1.757` and
-  `1.763 kPa`
-- Mean annual threshold exceedance, 2000 to 2023: `31.4%` of cropland pixels
+- Random forest random-test R2: `0.809`
+- Random forest random-test RMSE: `0.300 g C m-2 day-1`
+- Spatial-block cross-validation R2: `0.593`
+- Spatial-block cross-validation RMSE: `0.433 g C m-2 day-1`
+- NDSI-background VPD zero-response thresholds: `1.946`, `1.960` and
+  `1.964 kPa`
+- Mean annual threshold exceedance, 2000 to 2023: `8.3%` of cropland pixels
 
 The exact values are recorded in:
 
@@ -64,6 +70,10 @@ processed and aligned derivatives used for the manuscript analysis.
 
 ## Citation
 
-Please cite the associated manuscript when using this data/code package. A
-permanent archive DOI can be added after the GitHub repository is archived in a
+Please cite the associated manuscript when using this data/code package. The
+public GitHub repository is available at:
+
+https://github.com/wlcbysy/hetao-rse-vpd-salinity-data-code
+
+A permanent archive DOI can be added after the GitHub repository is archived in a
 research data repository such as Zenodo.

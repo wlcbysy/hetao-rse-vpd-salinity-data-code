@@ -116,7 +116,7 @@ var modis_lst = ee.ImageCollection("MODIS/061/MOD11A2")
 Export.image.toDrive({
   image: s2_ndsi,
   description: 'Hetao_Spring_NDSI_2023',
-  folder: 'Hetao_Compound_Stress_Data', // 对应本地的 data/ 文件夹
+  folder: 'Hetao_Compound_Stress_Data', // 对应本地 01_Data/03_Spatial_and_Remote_Sensing_Data/
   region: roi,
   scale: 10, // Sentinel-2分辨率
   crs: 'EPSG:4326',

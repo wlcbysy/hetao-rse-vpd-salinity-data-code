@@ -4,6 +4,8 @@ This data and code package has been uploaded to the public GitHub repository:
 
 https://github.com/wlcbysy/hetao-rse-vpd-salinity-data-code
 
+The public repository returned HTTP 200 when checked on 2026-06-24.
+
 The local repository is configured with:
 
 ```bash

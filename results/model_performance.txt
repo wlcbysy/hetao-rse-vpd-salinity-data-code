@@ -1,5 +1,14 @@
-Test R2: 0.949338
-Test RMSE: 0.002338
-Training N: 34615
-Test N: 8654
-Unified exceedance area percent: 61.203
+GPP Unit: g C m-2 day-1
+Response Years: 2021, 2023
+Response N: 28846
+Random Test R2: 0.809378
+Random Test RMSE: 0.299988
+Test R2: 0.809378
+Test RMSE: 0.299988
+Spatial Block CV R2: 0.593309
+Spatial Block CV RMSE: 0.432721
+Spatial Block CV N: 28846
+Spatial Block Fold Count: 16
+Training N: 23076
+Test N: 5770
+Unified exceedance area percent: 30.042

@@ -4,6 +4,16 @@ import re
 import numpy as np
 import pandas as pd
 
+from project_layout import (
+    ANALYSIS_OUTPUTS_DIR,
+    DIAGNOSTIC_FIGURES_DIR,
+    MAIN_FIGURES_DIR,
+    MASTER_DATA,
+    ROOT,
+    THRESHOLD_RESULTS,
+    ensure_output_dirs,
+)
+
 
 FEATURES = ["VPD", "NDSI", "SM", "LST", "Tmax"]
 FEATURE_LABELS = {
@@ -18,15 +28,23 @@ LEGACY_HARDCODED_THRESHOLDS_FOR_SENSITIVITY = {
     "Medium Salinity": 1.320,
     "High Salinity": 1.381,
 }
+SALINITY_DISPLAY_LABELS = {
+    "Low Salinity": "Low NDSI",
+    "Medium Salinity": "Medium NDSI",
+    "High Salinity": "High NDSI",
+}
 
 
 def project_paths(current_file):
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(current_file)))
+    ensure_output_dirs()
     return {
-        "base": base_dir,
-        "data": os.path.join(base_dir, "data", "Hetao_Master_Dataset_2000_2023.csv"),
-        "figures": os.path.join(base_dir, "figures"),
-        "thresholds": os.path.join(base_dir, "figures", "threshold_results.txt"),
+        "base": str(ROOT),
+        "data": str(MASTER_DATA),
+        "figures": str(DIAGNOSTIC_FIGURES_DIR),
+        "main_figures": str(MAIN_FIGURES_DIR),
+        "diagnostic_figures": str(DIAGNOSTIC_FIGURES_DIR),
+        "analysis_outputs": str(ANALYSIS_OUTPUTS_DIR),
+        "thresholds": str(THRESHOLD_RESULTS),
     }
 
 
@@ -49,6 +67,10 @@ def salinity_group(ndsi, q33, q66):
         ["Low Salinity", "Medium Salinity", "High Salinity"],
         default="Medium Salinity",
     )
+
+
+def salinity_display_label(group):
+    return SALINITY_DISPLAY_LABELS.get(group, str(group))
 
 
 def write_threshold_file(path, q33, q66, thresholds, sample_size):
@@ -89,7 +111,7 @@ def thresholds_from_file(path):
         missing = [key for key in required if key not in values]
         raise ValueError(
             f"Unified threshold file is missing required entries: {missing}. "
-            "Run code/09_safe_operating_space.py first."
+            "Run 02_Scripts/09_safe_operating_space.py first."
         )
     return {
         "Low Salinity": values["Low Salinity Threshold"],

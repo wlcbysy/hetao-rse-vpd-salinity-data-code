@@ -172,7 +172,7 @@ def plot_spatial(ax, risk_df):
     return hb
 
 
-def write_sensitivity(fig_dir, df, q33, q66, thresholds):
+def write_sensitivity(output_dir, df, q33, q66, thresholds):
     records = []
     for name, thresh in [
         ("old_hardcoded_thresholds", LEGACY_HARDCODED_THRESHOLDS_FOR_SENSITIVITY),
@@ -189,7 +189,7 @@ def write_sensitivity(fig_dir, df, q33, q66, thresholds):
                 }
             )
     out = pd.DataFrame(records)
-    out.to_csv(os.path.join(fig_dir, "threshold_sensitivity.csv"), index=False)
+    out.to_csv(os.path.join(output_dir, "threshold_sensitivity.csv"), index=False)
 
 
 def main():
@@ -198,8 +198,12 @@ def main():
         __file__,
         required_columns=["Year", "Lon", "Lat", "NDSI", "VPD"],
     )
-    fig_dir = paths["figures"]
+    fig_dir = paths["diagnostic_figures"]
+    main_fig_dir = paths["main_figures"]
+    output_dir = paths["analysis_outputs"]
     os.makedirs(fig_dir, exist_ok=True)
+    os.makedirs(main_fig_dir, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
 
     threshold_meta = read_threshold_file(paths["thresholds"])
     thresholds = thresholds_from_file(paths["thresholds"])
@@ -210,7 +214,8 @@ def main():
     print("Using VPD zero-response thresholds:", thresholds)
 
     risk_df = prepare_risk_data(df, q33, q66, thresholds)
-    write_sensitivity(fig_dir, df, q33, q66, thresholds)
+    sensitivity_path = os.path.join(output_dir, "threshold_sensitivity.csv")
+    write_sensitivity(output_dir, df, q33, q66, thresholds)
 
     plt.rcParams["font.family"] = "sans-serif"
     plt.rcParams["font.sans-serif"] = ["Arial", "Helvetica"]
@@ -224,7 +229,7 @@ def main():
     hb = plot_spatial(ax_b, risk_df)
     cbar = fig.colorbar(hb, ax=ax_b, pad=0.015)
     cbar.set_label(
-        "VPD margin above salinity-specific zero-response boundary (kPa)",
+        "VPD margin above NDSI-background zero-response boundary (kPa)",
         fontsize=10,
         weight="bold",
     )
@@ -232,7 +237,7 @@ def main():
         ax.tick_params(labelsize=10)
         sns.despine(ax=ax, top=True, right=True)
 
-    final_path = os.path.join(fig_dir, "Final_Fig5_Spatiotemporal_Risk.png")
+    final_path = os.path.join(main_fig_dir, "Final_Fig5_Spatiotemporal_Risk.png")
     fig.savefig(final_path, bbox_inches="tight", dpi=500)
     plt.close(fig)
 
@@ -251,9 +256,9 @@ def main():
     plt.close(fig_b)
 
     print(f"Saved: {final_path}")
-    print("Saved: figures/09_Temporal_Risk_Trend.png")
-    print("Saved: figures/10_Spatial_Risk_Map_2023.png")
-    print("Saved: figures/threshold_sensitivity.csv")
+    print(f"Saved: {os.path.join(fig_dir, '09_Temporal_Risk_Trend.png')}")
+    print(f"Saved: {os.path.join(fig_dir, '10_Spatial_Risk_Map_2023.png')}")
+    print(f"Saved: {sensitivity_path}")
 
 
 if __name__ == "__main__":

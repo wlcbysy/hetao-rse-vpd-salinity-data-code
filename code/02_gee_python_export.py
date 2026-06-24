@@ -2,6 +2,8 @@ import ee
 import geemap
 import os
 
+from project_layout import DERIVED_RASTER_DIR, ensure_output_dirs
+
 # ==============================================================================
 # Phase 2: 河套平原“VPD-盐分复合胁迫” GEE 本地自动化下载脚本 (Python)
 # 依赖包: pip install earthengine-api geemap
@@ -28,8 +30,8 @@ def main():
             ee.Initialize()
 
     # 2. 定义本地保存路径
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    out_dir = os.path.join(os.path.dirname(current_dir), 'data')
+    ensure_output_dirs()
+    out_dir = str(DERIVED_RASTER_DIR)
     os.makedirs(out_dir, exist_ok=True)
     print(f"数据输出目录: {out_dir}")
 

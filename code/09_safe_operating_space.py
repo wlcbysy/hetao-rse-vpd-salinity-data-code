@@ -17,6 +17,7 @@ from sklearn.ensemble import RandomForestRegressor
 from figure_common import (
     FEATURES,
     load_master_data,
+    salinity_display_label,
     salinity_group,
     salinity_quantiles,
     write_threshold_file,
@@ -40,7 +41,7 @@ def zero_crossing_to_gain(x, y):
 
 
 def bootstrap_thresholds(vpd, vpd_shap, groups, point_thresholds, n_boot=180, random_state=42):
-    """Estimate sampling uncertainty for salinity-specific zero-response thresholds."""
+    """Estimate sampling uncertainty for NDSI-background zero-response thresholds."""
     rng = np.random.default_rng(random_state)
     records = []
     sample_records = []
@@ -188,8 +189,12 @@ def smooth_2d_mean(x, y, values, bins_x, bins_y, sigma=1.2, min_support=1.5):
 def main():
     print("========== Safe Operating Space: unified threshold analysis ==========")
     df, paths = load_master_data(__file__)
-    fig_dir = paths["figures"]
+    fig_dir = paths["diagnostic_figures"]
+    main_fig_dir = paths["main_figures"]
+    output_dir = paths["analysis_outputs"]
     os.makedirs(fig_dir, exist_ok=True)
+    os.makedirs(main_fig_dir, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
 
     X = df[FEATURES]
     y = df["GPP"]
@@ -251,11 +256,11 @@ def main():
         vpd, ndsi, compound_shap, bins_vpd, bins_ndsi, x_centers, y_centers
     )
     threshold_bootstrap, threshold_bootstrap_samples = bootstrap_thresholds(vpd, vpd_shap, groups, thresholds)
-    threshold_bootstrap_path = os.path.join(fig_dir, "fig4_threshold_bootstrap.csv")
-    threshold_samples_path = os.path.join(fig_dir, "fig4_threshold_bootstrap_samples.csv")
+    threshold_bootstrap_path = os.path.join(output_dir, "fig4_threshold_bootstrap.csv")
+    threshold_samples_path = os.path.join(output_dir, "fig4_threshold_bootstrap_samples.csv")
     threshold_bootstrap.to_csv(threshold_bootstrap_path, index=False)
     threshold_bootstrap_samples.to_csv(threshold_samples_path, index=False)
-    boundary_path = os.path.join(fig_dir, "fig4_boundary_bootstrap_envelope.csv")
+    boundary_path = os.path.join(output_dir, "fig4_boundary_bootstrap_envelope.csv")
     pd.DataFrame(
         {
             "vpd_kpa": x_centers,
@@ -292,7 +297,7 @@ def main():
     ax_a.axhline(q33, color="#2c7fb8", linestyle="--", linewidth=1.3)
     ax_a.axhline(q66, color="#d95f0e", linestyle="--", linewidth=1.3)
     ax_a.text(0.02, 0.96, "(a)", transform=ax_a.transAxes, fontsize=16, weight="bold")
-    ax_a.set_title("Observed VPD-salinity support", fontsize=13, weight="bold", pad=8)
+    ax_a.set_title("Observed VPD-NDSI support", fontsize=13, weight="bold", pad=8)
     ax_a.set_xlabel("VPD (kPa)", fontsize=12, weight="bold")
     ax_a.set_ylabel("NDSI (higher = saltier)", fontsize=12, weight="bold")
     cbar_a = fig.colorbar(hb, ax=ax_a, pad=0.02)
@@ -441,7 +446,7 @@ def main():
     ax_c.legend(frameon=False, fontsize=8.3, loc="lower right")
     print("Panel C complete.", flush=True)
 
-    # Panel D: salinity-specific VPD zero-response threshold distributions.
+    # Panel D: NDSI-background VPD zero-response threshold distributions.
     ax_d = fig.add_subplot(gs[1, 1])
     palette = {
         "Low Salinity": "#1b9e77",
@@ -449,9 +454,9 @@ def main():
         "High Salinity": "#d95f02",
     }
     labels = {
-        "Low Salinity": "Low salinity",
-        "Medium Salinity": "Medium salinity",
-        "High Salinity": "High salinity",
+        "Low Salinity": salinity_display_label("Low Salinity"),
+        "Medium Salinity": salinity_display_label("Medium Salinity"),
+        "High Salinity": salinity_display_label("High Salinity"),
     }
     ordered_groups = ["Low Salinity", "Medium Salinity", "High Salinity"]
     y_pos = np.arange(len(ordered_groups))[::-1]
@@ -553,7 +558,7 @@ def main():
         ax.tick_params(labelsize=10)
 
     out_fig = os.path.join(fig_dir, "08_Advanced_Safe_Operating_Space.png")
-    final_fig = os.path.join(fig_dir, "Final_Fig4_Safe_Operating_Space.png")
+    final_fig = os.path.join(main_fig_dir, "Final_Fig4_Safe_Operating_Space.png")
     fig.savefig(out_fig, bbox_inches="tight", dpi=350)
     fig.savefig(final_fig, bbox_inches="tight", dpi=350)
     plt.close(fig)
